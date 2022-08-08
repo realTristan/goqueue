@@ -10,6 +10,7 @@ GoQueue is a light weight, easy to read open source module that uses solely nati
 
 # Installation
 `go get https://github.com/realTristan/GoQueue`
+<br />
 
 # How do I use GoQueue?
 ```go
@@ -31,9 +32,6 @@ func usage() {
     // Print the item
     println(queue_item)
 }
-
-
-
 
 ///////////////////////
 // GoQueue Functions //
