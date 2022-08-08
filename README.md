@@ -12,7 +12,6 @@ GoQueue is a light weight, easy to read open source module that uses solely nati
 `go get https://github.com/realTristan/GoQueue`
 
 <br />
-<br />
 
 # Usage
 ```go
