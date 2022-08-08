@@ -1,7 +1,7 @@
 
 
 
-# fasthttp [![GoDoc]](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) 
+# fasthttp ![Stars](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) 
 
 ![Go Queue Banner](https://user-images.githubusercontent.com/75189508/183435878-e5669071-df93-478a-a364-245862dadddb.png)
 
