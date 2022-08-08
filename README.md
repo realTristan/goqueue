@@ -1,7 +1,5 @@
 
-
-
-# fasthttp ![Stars](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) 
+# GoQueue ![Stars](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) ![Watchers](https://img.shields.io/github/watchers/realTristan/GoQueue?label=Watchers) 
 
 ![Go Queue Banner](https://user-images.githubusercontent.com/75189508/183435878-e5669071-df93-478a-a364-245862dadddb.png)
 
