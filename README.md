@@ -12,18 +12,32 @@ GoQueue is a light weight, easy to read open source module that uses solely nati
 `go get -u github.com/realTristan/GoQueue`
 
 
-# Usage
+# Quick Usage
 ```go
-
-///////////////////////
-// GoQueue Usage //
-///////////////////////
-
-package examples
+package main
 
 import (
 	Queue "queue/src"
 )
+
+func main() {
+	// Create a new queue
+	queue := Queue.Create()
+	
+	// Put item into the queue
+	queue.Put("Item")
+	
+	// Get the item from the queue
+	item := queue.Get()
+	
+	// Print the item
+	println(item)
+
+}
+```
+
+# Function Usage
+```go
 
 // Add Items to the queue
 func AddItems() {
