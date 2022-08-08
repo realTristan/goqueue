@@ -11,8 +11,11 @@ GoQueue is a light weight, easy to read open source module that uses solely nati
 # How to use
 ```go
 
-// Main Function
-func main() {
+///////////////////////
+// GoQueue Usage //
+///////////////////////
+
+func usage() {
     // Create the queue
     queue := Create()
 
@@ -25,6 +28,12 @@ func main() {
     // Print the item
     println(queue_item)
 }
+
+
+///////////////////////
+// GoQueue Functions //
+///////////////////////
+
 
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
