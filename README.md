@@ -86,6 +86,10 @@ func OtherFunctions() {
 	// Returns the length of the queue slice
 	queueLength := queue.Size()
 }
+```
+
+# Functions
+```go
 
 ///////////////////////
 // GoQueue Functions //
