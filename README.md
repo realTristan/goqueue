@@ -8,7 +8,10 @@ Flexible Queue System implementation for Go.
 # Why GoQueue?
 GoQueue is a light weight, easy to read open source module that uses solely native golang code. GoQueue's functions are based off of the python queue library so the learning curve is not time consuming.
 
-# How to use
+# Installation
+`go get https://github.com/realTristan/GoQueue`
+
+# How do I use GoQueue?
 ```go
 
 ///////////////////////
@@ -30,10 +33,11 @@ func usage() {
 }
 
 
+
+
 ///////////////////////
 // GoQueue Functions //
 ///////////////////////
-
 
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
