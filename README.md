@@ -37,7 +37,7 @@ func main() {
 }
 ```
 
-# Function Usage
+# GoQueue Usage
 ```go
 
 // Add Items to the queue
