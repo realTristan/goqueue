@@ -4,6 +4,7 @@ import (
 	Queue "queue/src"
 )
 
+// Add Items to the queue
 func AddItems() {
 	queue := Queue.Create()
 
@@ -14,6 +15,7 @@ func AddItems() {
 	}
 }
 
+// Remove items from the queue
 func RemoveItems() {
 	queue := Queue.Create()
 
@@ -25,6 +27,7 @@ func RemoveItems() {
 	queue.Remove("Item")
 }
 
+// Get items from the queue
 func GetItems() {
 	queue := Queue.Create()
 
@@ -37,7 +40,8 @@ func GetItems() {
 	println(_item)
 }
 
-func ReadItemQueue() {
+// Other Queue Functions
+func OtherFunctions() {
 	queue := Queue.Create()
 	if queue.Contains("Item") {
 		println("Contains Item")
