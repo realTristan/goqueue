@@ -1,5 +1,6 @@
 
-![Untitled-1](https://user-images.githubusercontent.com/75189508/183445864-652f08ae-ee72-4368-b14e-4cd39362d62e.png) # GoQueue ![Stars](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) ![Watchers](https://img.shields.io/github/watchers/realTristan/GoQueue?label=Watchers) 
+![Untitled-1](https://user-images.githubusercontent.com/75189508/183445864-652f08ae-ee72-4368-b14e-4cd39362d62e.png) 
+# GoQueue ![Stars](https://img.shields.io/github/stars/realTristan/GoQueue?color=brightgreen) ![Watchers](https://img.shields.io/github/watchers/realTristan/GoQueue?label=Watchers) 
 
 ![Go Queue Banner](https://user-images.githubusercontent.com/75189508/183435878-e5669071-df93-478a-a364-245862dadddb.png)
 
