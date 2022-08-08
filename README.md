@@ -39,7 +39,6 @@ func main() {
 
 # GoQueue Usage
 ```go
-
 // Add Items to the queue
 func AddItems() {
 	queue := Queue.Create()
@@ -103,13 +102,8 @@ func OtherFunctions() {
 }
 ```
 
-# Functions
+# GoQueue Functions
 ```go
-
-///////////////////////
-// GoQueue Functions //
-///////////////////////
-
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create() *ItemQueue {
