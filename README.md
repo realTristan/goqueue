@@ -136,9 +136,9 @@ func (q *ItemQueue) Show() *[]Item {
 	return &q.items
 }
 
-// q.Index(index integer) -> *Item
-// The Index() function is used to return an item at the provided index of the ItemQueue
-func (q *ItemQueue) Index(i int) *Item {
+// q.GetAtIndex(index integer) -> *Item
+// The GetAtIndex() function is used to return an item at the provided index of the ItemQueue
+func (q *ItemQueue) GetAtIndex(i int) *Item {
 	return &q.items[i]
 }
 
