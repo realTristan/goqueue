@@ -54,11 +54,11 @@ func GetItems() {
 
 	// Get the item from the queue (doesn't remove it from the queue)
 	item := queue.Get()
-	println(item)
+	println(*item)
 
 	// Grab the item from the queue (removes it from the queue)
 	_item := queue.Grab()
-	println(_item)
+	println(*_item)
 }
 
 // Other Queue Functions
