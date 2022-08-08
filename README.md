@@ -33,7 +33,7 @@ func main() {
 	// Print the item
 	println(item)
 	
-	// Result -> "Item"
+	// Output -> "Item"
 }
 ```
 
