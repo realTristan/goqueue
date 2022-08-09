@@ -104,7 +104,7 @@ func (q *ItemQueue) Get() *Item {
 func (q *ItemQueue) Grab() *Item {
 	var item Item = q.items[0]
 	q.Secure(func() {
-		q.items = q.items[1:len(q.items)]
+		q.items = q.items[1:]
 	})
 	return &item
 }

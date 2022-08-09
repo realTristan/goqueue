@@ -6,25 +6,39 @@
 Flexible Queue System for Go.
 
 # Why GoQueue?
-GoQueue is a light weight, easy to read open source module that uses solely native golang code. GoQueue's functions are based off of the python queue library so the learning curve is not time consuming.
+GoQueue is a light weight, easy to read open source module that uses solely native golang code. GoQueue's functions are based off of the python queue library so the learning curve is not as time consuming.
 
 # Installation
 `go get -u github.com/realTristan/GoQueue`
 
 
-# Usage
+# Quick Usage
 ```go
-
-///////////////////////
-// GoQueue Usage //
-///////////////////////
-
-package examples
+package main
 
 import (
-	Queue "queue/src"
+	Queue "github.com/realTristan/GoQueue/queue"
 )
 
+func main() {
+	// Create a new queue
+	queue := Queue.Create()
+	
+	// Put item into the queue
+	queue.Put("Item")
+	
+	// Get the item from the queue
+	item := queue.Get()
+	
+	// Print the item
+	println(item)
+	
+	// Output -> "Item"
+}
+```
+
+# GoQueue Usage
+```go
 // Add Items to the queue
 func AddItems() {
 	queue := Queue.Create()
@@ -54,11 +68,11 @@ func GetItems() {
 
 	// Get the item from the queue (doesn't remove it from the queue)
 	item := queue.Get()
-	println(item)
+	println(*item)
 
 	// Grab the item from the queue (removes it from the queue)
 	_item := queue.Grab()
-	println(_item)
+	println(*_item)
 }
 
 // Other Queue Functions
@@ -86,11 +100,10 @@ func OtherFunctions() {
 	// Returns the length of the queue slice
 	queueLength := queue.Size()
 }
+```
 
-///////////////////////
-// GoQueue Functions //
-///////////////////////
-
+# GoQueue Functions
+```go
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create() *ItemQueue {
@@ -171,7 +184,7 @@ func (q *ItemQueue) Get() *Item {
 func (q *ItemQueue) Grab() *Item {
 	var item Item = q.items[0]
 	q.Secure(func() {
-		q.items = q.items[1:len(q.items)]
+		q.items = q.items[1:]
 	})
 	return &item
 }
