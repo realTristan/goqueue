@@ -33,9 +33,12 @@ func Create() *ItemQueue {
 // The Secure() function is used to lock the ItemQueue before executing the provided function
 // 	   then unlock the ItemQueue after the function has been executed
 func (q *ItemQueue) Secure(function func()) {
+	// Lock the queue then unlock once function closes
 	q.lock.Lock()
+	defer q.lock.Unlock()
+
+	// Run the provided function
 	function()
-	q.lock.Unlock()
 }
 
 // q.Index(index integer) -> *Item
