@@ -1,4 +1,4 @@
-package examples
+package queue_examples
 
 import (
 	Queue "github.com/realTristan/GoQueue/queue"
@@ -54,14 +54,14 @@ func OtherFunctions() {
 	queue.Show()
 
 	// Get item at specific index
-	itemAtIndex := queue.GetAtIndex(1)
+	// itemAtIndex := queue.GetAtIndex(1)
 
 	// Returns whether queue is empty
-	isEmpty := queue.IsEmpty()
+	// isEmpty := queue.IsEmpty()
 
 	// Returns whether queue is not empty
-	isNotEmpty := queue.IsNotEmpty()
+	// isNotEmpty := queue.IsNotEmpty()
 
 	// Returns the length of the queue slice
-	queueLength := queue.Size()
+	// queueLength := queue.Size()
 }
