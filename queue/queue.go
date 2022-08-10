@@ -68,9 +68,9 @@ func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 // q.Contains(Item) -> None
 // The Contains() function will scheck whether the provided ItemQueue contains
 //	  the given Item (_item)
-func (q *ItemQueue) Contains(_item Item) bool {
+func (q *ItemQueue) Contains(item Item) bool {
 	for i := 0; i < len(q.items); i++ {
-		if q.items[i] == _item {
+		if q.items[i] == item {
 			return true
 		}
 	}
@@ -80,10 +80,10 @@ func (q *ItemQueue) Contains(_item Item) bool {
 // q.Remove(Item) -> None
 // The Remove() function will secure the ItemQueue before iterating
 //	  through said ItemQueue and remove the given Item (_item)
-func (q *ItemQueue) Remove(_item Item) {
+func (q *ItemQueue) Remove(item Item) {
 	q.Secure(func() {
 		for i := 0; i < len(q.items); i++ {
-			if q.items[i] == _item {
+			if q.items[i] == item {
 				q.items = append(q.items[:i], q.items[i+1:]...)
 				return
 			}
