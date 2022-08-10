@@ -103,11 +103,12 @@ func (q *ItemQueue) Put(i Item) {
 //    then remove it from the front
 // The function returns the first item of the ItemQueue
 func (q *ItemQueue) Get() *Item {
+	var item Item = q.items[0]
 	q.Secure(func() {
 		q.items = append(q.items, q.items[0])
-		q.items = q.items[1:len(q.items)]
+		q.items = q.items[1:]
 	})
-	return &q.items[0]
+	return &item
 }
 
 // q.Grab() -> Item
