@@ -31,7 +31,7 @@ func main() {
 	item := queue.Get()
 	
 	// Print the item
-	println(item)
+	println(*item)
 	
 	// Output -> "Item"
 }
