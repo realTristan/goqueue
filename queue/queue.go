@@ -69,6 +69,12 @@ func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 // The Contains() function will scheck whether the provided ItemQueue contains
 //	  the given Item (_item)
 func (q *ItemQueue) Contains(item Item) bool {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Iterate over the queue
 	for i := 0; i < len(q.items); i++ {
 		if q.items[i] == item {
 			return true
