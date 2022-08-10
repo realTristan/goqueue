@@ -1,4 +1,4 @@
-package main
+package testing
 
 import (
 	"fmt"
@@ -7,7 +7,9 @@ import (
 	Queue "github.com/realTristan/GoQueue/queue"
 )
 
-func main() {
+// ThreadSafety() Function checks to make sure reading/writing the queue
+//     is thread safe
+func ThreadSafety() {
 	// Track GoRoutines
 	var count int = 0
 
@@ -37,4 +39,8 @@ func main() {
 	}
 	// Wait for goroutines to finish (never)
 	wg.Wait()
+}
+
+func main() {
+
 }
