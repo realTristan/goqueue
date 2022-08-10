@@ -11,17 +11,17 @@ import "sync"
 // Generics Require Go v1.18+
 
 // Generic T
+//
 //	 The 'T' Type is the type of variables that will be going inside the queue slice
 //	 The Generic T is can be declared as any so it is possible to have multiple types
 //		   within the Queue Slice
-type Item[T any] T
-
+type Item[T any] any
 
 // The 'ItemQueue' Struct contains the []T slice
 // This struct holds two keys,
-//	   - items -> the []T slice
-//	   - lock -> the mutex lock which prevents overwrites and data corruption
-//			      ↳ We use RWMutex instead of Mutex as it's better for majority read slices
+//   - items -> the []T slice
+//   - lock -> the mutex lock which prevents overwrites and data corruption
+//     ↳ We use RWMutex instead of Mutex as it's better for majority read slices
 type ItemQueue[T any] struct {
 	items []T
 	mutex sync.RWMutex
@@ -35,8 +35,9 @@ func Create[T any]() *ItemQueue[T] {
 
 // q.Secure(func()) -> None
 // The Secure() function is used to lock the ItemQueue before executing the provided function
-// 	   then unlock the ItemQueue after the function has been executed
-func (q *ItemQueue[T]) Secure(function func()) {
+//
+//	then unlock the ItemQueue after the function has been executed
+func (q *ItemQueue[T]) secure(function func()) {
 	// Lock the queue then unlock once function closes
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
@@ -50,7 +51,7 @@ func (q *ItemQueue[T]) Secure(function func()) {
 // The function will then return the removed item if the user requires it's use
 func (q *ItemQueue[T]) RemoveAtIndex(i int) *T {
 	var item T
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[i]
 		q.items = append(q.items[:i], q.items[i+1:]...)
 	})
@@ -59,24 +60,31 @@ func (q *ItemQueue[T]) RemoveAtIndex(i int) *T {
 
 // q.Contains(Item) -> None
 // The Contains() function will scheck whether the provided ItemQueue contains
-//	  the given Item (_item)
+//
+//	the given Item (_item)
 func (q *ItemQueue[T]) Contains(item any) bool {
 
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// Return whether any queue items equal the item
-	return any(q.items == item)
+	// Iterate over the queue
+	for i := 0; i < len(q.items); i++ {
+		if any(q.items[i]) == item {
+			return true
+		}
+	}
+	return false
 }
 
 // q.Remove(Item) -> None
 // The Remove() function will secure the ItemQueue before iterating
-//	  through said ItemQueue and remove the given Item (_item)
+//
+//	through said ItemQueue and remove the given Item (_item)
 func (q *ItemQueue[T]) Remove(item any) {
-	q.Secure(func() {
+	q.secure(func() {
 		for i := 0; i < len(q.items); i++ {
-			if q.items[i] == item {
+			if any(q.items[i]) == item {
 				q.items = append(q.items[:i], q.items[i+1:]...)
 				return
 			}
@@ -87,18 +95,20 @@ func (q *ItemQueue[T]) Remove(item any) {
 // q.Put(Item) -> None
 // The Put() function is used to add a new item to the provided ItemQueue
 func (q *ItemQueue[T]) Put(i T) {
-	q.Secure(func() {
+	q.secure(func() {
 		q.items = append(q.items, i)
 	})
 }
 
 // q.Get() -> Item
 // The Get() function will append the first item of the ItemQueue to the back of the slice
-//    then remove it from the front
+//
+//	then remove it from the front
+//
 // The function returns the first item of the ItemQueue
 func (q *ItemQueue[T]) Get() *T {
 	var item T
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[0]
 		q.items = append(q.items, q.items[0])
 		q.items = q.items[1:]
@@ -108,10 +118,11 @@ func (q *ItemQueue[T]) Get() *T {
 
 // q.Grab() -> Item
 // The Grab() function will return the first item of the ItemQueue then
-//    remove it from said ItemQueue
+//
+//	remove it from said ItemQueue
 func (q *ItemQueue[T]) Grab() *T {
 	var item T
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[0]
 		q.items = q.items[1:]
 	})
@@ -121,7 +132,7 @@ func (q *ItemQueue[T]) Grab() *T {
 // q.Clear() -> None
 // The Clear() function will secure the queue then remove all of its items
 func (q *ItemQueue[T]) Clear() {
-	q.Secure(func() {
+	q.secure(func() {
 		q.items = []T{}
 	})
 }
