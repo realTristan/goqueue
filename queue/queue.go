@@ -123,28 +123,28 @@ func (q *ItemQueue) Clear() {
 	})
 }
 
-// q.Show() -> *[]Item
+// q.Show() -> []Item
 // The Show() function will return the ItemQueue's items
-func (q *ItemQueue) Show() *[]Item {
+func (q *ItemQueue) Show() []Item {
 
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
 	// Return the queue items
-	return &q.items
+	return q.items
 }
 
-// q.GetAtIndex(index integer) -> *Item
+// q.GetAtIndex(index integer) -> Item
 // The GetAtIndex() function is used to return an item at the provided index of the ItemQueue
-func (q *ItemQueue) GetAtIndex(i int) *Item {
+func (q *ItemQueue) GetAtIndex(i int) Item {
 
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
 	// Return the item at the specific index
-	return &q.items[i]
+	return q.items[i]
 }
 
 // q.IsEmpty() -> bool

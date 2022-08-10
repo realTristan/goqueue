@@ -70,7 +70,7 @@ func TestGet(queue *Queue.ItemQueue) {
 
 	// Get item from the queue
 	getItem := queue.Get()
-	fmt.Printf("Get Item in queue: %v\n", getItem)
+	fmt.Printf("Get Item in queue: %v\n", *getItem)
 }
 
 // Testing: Grab -> grabbing an item from the queue
@@ -81,7 +81,7 @@ func TestGrab(queue *Queue.ItemQueue) {
 
 	// Grab the item
 	grabItem := queue.Grab()
-	fmt.Printf("Grab Item in queue: %v\n", grabItem)
+	fmt.Printf("Grab Item in queue: %v\n", *grabItem)
 
 	// Show queue contents after grab
 	ShowQueueContents(queue, "Grab")
