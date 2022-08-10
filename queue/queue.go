@@ -57,8 +57,9 @@ func (q *ItemQueue) Secure(function func()) {
 // The RemoveAtIndex() function is used to remove an item at the provided index of the ItemQueue
 // The function will then return the removed item if the user requires it's use
 func (q *ItemQueue) RemoveAtIndex(i int) *Item {
-	var item Item = q.items[i]
+	var item Item
 	q.Secure(func() {
+		item = q.items[i]
 		q.items = append(q.items[:i], q.items[i+1:]...)
 	})
 	return &item
@@ -103,8 +104,9 @@ func (q *ItemQueue) Put(i Item) {
 //    then remove it from the front
 // The function returns the first item of the ItemQueue
 func (q *ItemQueue) Get() *Item {
-	var item Item = q.items[0]
+	var item Item
 	q.Secure(func() {
+		item = q.items[0]
 		q.items = append(q.items, q.items[0])
 		q.items = q.items[1:]
 	})
@@ -115,8 +117,9 @@ func (q *ItemQueue) Get() *Item {
 // The Grab() function will return the first item of the ItemQueue then
 //    remove it from said ItemQueue
 func (q *ItemQueue) Grab() *Item {
-	var item Item = q.items[0]
+	var item Item
 	q.Secure(func() {
+		item = q.items[0]
 		q.items = q.items[1:]
 	})
 	return &item
