@@ -18,7 +18,7 @@ type Item interface{}
 //			  ↳ We use RWMutex instead of Mutex as it's better for majority read slices
 type ItemQueue struct {
 	items []Item
-	lock  sync.RWMutex
+	mutex  sync.RWMutex
 }
 
 // Create() -> *ItemQueue
@@ -34,8 +34,8 @@ func Create() *ItemQueue {
 // 	   then unlock the ItemQueue after the function has been executed
 func (q *ItemQueue) Secure(function func()) {
 	// Lock the queue then unlock once function closes
-	q.lock.Lock()
-	defer q.lock.Unlock()
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
 
 	// Run the provided function
 	function()
