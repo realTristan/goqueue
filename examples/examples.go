@@ -1,6 +1,8 @@
 package examples
 
 import (
+	"fmt"
+
 	Queue "github.com/realTristan/GoQueue/queue"
 )
 
@@ -51,17 +53,22 @@ func OtherFunctions() {
 	queue.Clear()
 
 	// Show the queue contents
-	queue.Show()
+	queueContents := queue.Show()
+	fmt.Printf("Queue contents: %v\n", queueContents)
 
 	// Get item at specific index
 	itemAtIndex := queue.GetAtIndex(1)
+	fmt.Printf("Item at index 1: %d\n", itemAtIndex)
 
 	// Returns whether queue is empty
 	isEmpty := queue.IsEmpty()
+	fmt.Printf("Is queue empty: %v\n", isEmpty)
 
 	// Returns whether queue is not empty
 	isNotEmpty := queue.IsNotEmpty()
+	fmt.Printf("Is queue not empty: %v\n", isNotEmpty)
 
 	// Returns the length of the queue slice
 	queueLength := queue.Size()
+	fmt.Printf("Length of queue: %d\n", queueLength)
 }
