@@ -180,7 +180,7 @@ func TestRemoveAtIndex(queue *Queue.ItemQueue) {
 // Main function
 func main() {
 	// Testing: Create -> creating a new queue
-	queue := Queue.Create()
+	var queue *Queue.ItemQueue = Queue.Create()
 	ShowQueueContents(queue, "Create")
 
 	/////////////////////////////
