@@ -19,7 +19,7 @@ func main() {
 	wg.Add(1)
 
 	// Create goroutines
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 100; i++ {
 		go func() {
 			for {
 				count++

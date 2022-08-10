@@ -1,13 +1,6 @@
 package queue
 
-import (
-	"sync"
-)
-
-// The WaitGroup makes the queue thread-safe as it will
-//    make all mutex's have to wait until the other ones have
-//    finished locking/unlocking before running the function
-var WaitGroup sync.WaitGroup = sync.WaitGroup{}
+import "sync"
 
 // Type Item interface{}
 //	The 'Item' Type is the type of variables that will be going inside the queue slice
@@ -38,13 +31,6 @@ func Create() *ItemQueue {
 // The Secure() function is used to lock the ItemQueue before executing the provided function
 // 	   then unlock the ItemQueue after the function has been executed
 func (q *ItemQueue) Secure(function func()) {
-	// Wait Until previous WaitGroup task is finished
-	WaitGroup.Wait()
-
-	// Increase WaitGroup tasks then defer it
-	WaitGroup.Add(1)
-	defer WaitGroup.Done()
-
 	// Lock the queue then unlock once function closes
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
