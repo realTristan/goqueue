@@ -22,9 +22,7 @@ type ItemQueue struct {
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create() *ItemQueue {
-	var q ItemQueue = ItemQueue{}
-	q.items = []Item{}
-	return &q
+	return &ItemQueue{items: []Item{}}
 }
 
 // q.Secure(func()) -> None
