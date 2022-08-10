@@ -18,7 +18,7 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	// Create goroutines
+	// Create goroutines (100)
 	for i := 0; i < 100; i++ {
 		go func() {
 			for {
