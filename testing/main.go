@@ -12,7 +12,7 @@ func main() {
 	var count int = 0
 
 	// Initialize queue
-	queue := Queue.Create()
+	queue := Queue.Create[int]()
 
 	// Create waitgroup for goroutines
 	wg := sync.WaitGroup{}

@@ -6,7 +6,7 @@ import (
 
 // Add Items to the queue
 func AddItems() {
-	queue := Queue.Create()
+	queue := Queue.Create[any]()
 
 	// Add items from a slice to the queue
 	items := [3]interface{}{1.1, 1, "String"}
@@ -17,7 +17,7 @@ func AddItems() {
 
 // Remove items from the queue
 func RemoveItems() {
-	queue := Queue.Create()
+	queue := Queue.Create[string]()
 
 	// Remove at index
 	removedItem := queue.RemoveAtIndex(0)
@@ -29,7 +29,7 @@ func RemoveItems() {
 
 // Get items from the queue
 func GetItems() {
-	queue := Queue.Create()
+	queue := Queue.Create[any]()
 
 	// Get the item from the queue (doesn't remove it from the queue)
 	item := queue.Get()
@@ -42,7 +42,7 @@ func GetItems() {
 
 // Other Queue Functions
 func OtherFunctions() {
-	queue := Queue.Create()
+	queue := Queue.Create[string]()
 	if queue.Contains("Item") {
 		println("Contains Item")
 	}
