@@ -136,29 +136,59 @@ func (q *ItemQueue) Clear() {
 // q.Show() -> *[]Item
 // The Show() function will return the ItemQueue's items
 func (q *ItemQueue) Show() *[]Item {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Return the queue items
 	return &q.items
 }
 
 // q.GetAtIndex(index integer) -> *Item
 // The GetAtIndex() function is used to return an item at the provided index of the ItemQueue
 func (q *ItemQueue) GetAtIndex(i int) *Item {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Return the item at the specific index
 	return &q.items[i]
 }
 
 // q.IsEmpty() -> bool
 // The IsEmpty() function will return whether the provided ItemQueue contains any Items
 func (q *ItemQueue) IsEmpty() bool {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Return whether queue is empty
 	return len(q.items) == 0
 }
 
 // q.IsNotEmpty() -> bool
 // The IsNotEmpty() function will return whether the provided ItemQueue contains any Items
 func (q *ItemQueue) IsNotEmpty() bool {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Return whether length is greater than 0
 	return len(q.items) > 0
 }
 
 // q.Size() -> int
 // The Size() function will return the length of the ItemQueue slice
 func (q *ItemQueue) Size() int {
+
+	// Lock Reading
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// Return the queue length
 	return len(q.items)
 }
