@@ -14,11 +14,11 @@ type Item interface{}
 //		The 'ItemQueue' Struct contains the []'Type Item interface{}' slice
 //	 This struct holds two keys,
 //	    - items -> the []'Type Item interface{}' slice
-//	    - lock -> the mutex lock which prevents overwrites and data corruption
+//	    - mutex -> the mutex lock which prevents overwrites and data corruption
 //				  ↳ We use RWMutex instead of Mutex as it's better for majority read slices
 type ItemQueue struct {
 	items []Item
-	mutex sync.RWMutex
+	mutex *sync.RWMutex
 }
 
 // Create() -> *ItemQueue

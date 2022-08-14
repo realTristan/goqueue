@@ -20,11 +20,11 @@ type Item[T any] any
 // The 'ItemQueue' Struct contains the []T slice
 // This struct holds two keys,
 //   - items -> the []T slice
-//   - lock -> the mutex lock which prevents overwrites and data corruption
+//   - mutex -> the mutex lock which prevents overwrites and data corruption
 //     ↳ We use RWMutex instead of Mutex as it's better for majority read slices
 type ItemQueue[T any] struct {
 	items []T
-	mutex sync.RWMutex
+	mutex *sync.RWMutex
 }
 
 // Create() -> *ItemQueue
