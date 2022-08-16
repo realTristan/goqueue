@@ -111,24 +111,12 @@ func Create() *ItemQueue {
 	return &ItemQueue{items: []Item{}}
 }
 
-// q.Secure(func()) -> None
-// The Secure() function is used to lock the ItemQueue before executing the provided function
-// 	   then unlock the ItemQueue after the function has been executed
-func (q *ItemQueue) Secure(function func()) {
-	// Lock the queue then unlock once function closes
-	q.mutex.Lock()
-	defer q.mutex.Unlock()
-
-	// Run the provided function
-	function()
-}
-
 // q.Index(index integer) -> *Item
 // The RemoveAtIndex() function is used to remove an item at the provided index of the ItemQueue
 // The function will then return the removed item if the user requires it's use
 func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 	var item Item
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[i]
 		q.items = append(q.items[:i], q.items[i+1:]...)
 	})
@@ -157,7 +145,7 @@ func (q *ItemQueue) Contains(item Item) bool {
 // The Remove() function will secure the ItemQueue before iterating
 //	  through said ItemQueue and remove the given Item (_item)
 func (q *ItemQueue) Remove(item Item) {
-	q.Secure(func() {
+	q.secure(func() {
 		for i := 0; i < len(q.items); i++ {
 			if q.items[i] == item {
 				q.items = append(q.items[:i], q.items[i+1:]...)
@@ -170,7 +158,7 @@ func (q *ItemQueue) Remove(item Item) {
 // q.Put(Item) -> None
 // The Put() function is used to add a new item to the provided ItemQueue
 func (q *ItemQueue) Put(i Item) {
-	q.Secure(func() {
+	q.secure(func() {
 		q.items = append(q.items, i)
 	})
 }
@@ -181,7 +169,7 @@ func (q *ItemQueue) Put(i Item) {
 // The function returns the first item of the ItemQueue
 func (q *ItemQueue) Get() *Item {
 	var item Item
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[0]
 		q.items = append(q.items, q.items[0])
 		q.items = q.items[1:]
@@ -194,7 +182,7 @@ func (q *ItemQueue) Get() *Item {
 //    remove it from said ItemQueue
 func (q *ItemQueue) Grab() *Item {
 	var item Item
-	q.Secure(func() {
+	q.secure(func() {
 		item = q.items[0]
 		q.items = q.items[1:]
 	})
@@ -204,7 +192,7 @@ func (q *ItemQueue) Grab() *Item {
 // q.Clear() -> None
 // The Clear() function will secure the queue then remove all of its items
 func (q *ItemQueue) Clear() {
-	q.Secure(func() {
+	q.secure(func() {
 		q.items = []Item{}
 	})
 }
