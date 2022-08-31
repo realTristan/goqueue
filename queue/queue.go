@@ -24,7 +24,7 @@ type ItemQueue struct {
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create() *ItemQueue {
-	return &ItemQueue{items: []Item{}}
+	return &ItemQueue{mutex: &sync.RWMutex{}, items: []Item{}}
 }
 
 // q.secure(func()) -> None
