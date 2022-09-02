@@ -17,7 +17,7 @@ GoQueue is a light weight, easy to read open source module that uses solely nati
 package main
 
 import (
-	goqueue "github.com/realTristan/goqueue/queue"
+	goqueue "github.com/realTristan/goqueue"
 )
 
 func main() {
