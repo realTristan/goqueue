@@ -24,10 +24,10 @@ type ItemQueue struct {
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create() *ItemQueue {
-	return &ItemQueue{items: []Item{}}
+	return &ItemQueue{mutex: &sync.RWMutex{}, items: []Item{}}
 }
 
-// q.Secure(func()) -> None
+// q.secure(func()) -> None
 // The Secure() function is used to lock the ItemQueue before executing the provided function
 //
 //	then unlock the ItemQueue after the function has been executed
@@ -40,7 +40,7 @@ func (q *ItemQueue) secure(function func()) {
 	function()
 }
 
-// q.Index(index integer) -> *Item
+// q.RemoveAtIndex(index integer) -> *Item
 // The RemoveAtIndex() function is used to remove an item at the provided index of the ItemQueue
 // The function will then return the removed item if the user requires it's use
 func (q *ItemQueue) RemoveAtIndex(i int) *Item {
