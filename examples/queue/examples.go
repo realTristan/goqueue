@@ -1,7 +1,7 @@
 package queue_examples
 
 import (
-	Queue "github.com/realTristan/GoQueue/queue"
+	Queue "github.com/realTristan/goqueue"
 )
 
 // Add Items to the queue

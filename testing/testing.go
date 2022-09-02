@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"sync"
 
-	Queue "github.com/realTristan/GoQueue/queue"
+	Queue "github.com/realTristan/goqueue"
 )
 
 // ThreadSafety() Function checks to make sure reading/writing the queue
-//     is thread safe
+//
+//	is thread safe
 func ThreadSafety(queue *Queue.ItemQueue) {
 	// Track GoRoutines
 	var (

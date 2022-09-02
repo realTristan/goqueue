@@ -1,3 +1,3 @@
-module github.com/realTristan/GoQueue
+module github.com/realTristan/goqueue
 
 go 1.18
