@@ -1,17 +1,18 @@
 package goqueue
 
+// Import sync package for mutexes
 import "sync"
 
 // Type Item interface{}
 //
-//		The 'Item' Type is the type of variables that will be going inside the queue slice
+//	 The 'Item' Type is the type of variables that will be going inside the queue slice
 //	 The Item is declared as interface so it is possible to have multiple types
 //		   within the Queue Slice
 type Item interface{}
 
 // type ItemQueue struct
 //
-//		The 'ItemQueue' Struct contains the []'Type Item interface{}' slice
+//	 The 'ItemQueue' Struct contains the []'Type Item interface{}' slice
 //	 This struct holds two keys,
 //	    - items -> the []'Type Item interface{}' slice
 //	    - mutex -> the mutex lock which prevents overwrites and data corruption
@@ -21,16 +22,15 @@ type ItemQueue struct {
 	mutex *sync.RWMutex
 }
 
-// Create() -> *ItemQueue
-// The Create() function will return an empty ItemQueue
+// The Create() function is used to create
+// a new, empty ItemQueue
 func Create() *ItemQueue {
 	return &ItemQueue{mutex: &sync.RWMutex{}, items: []Item{}}
 }
 
-// q.secure(func()) -> None
-// The Secure() function is used to lock the ItemQueue before executing the provided function
-//
-//	then unlock the ItemQueue after the function has been executed
+// The Secure() function is used to lock the ItemQueue
+// before executing the provided function then unlock the
+// ItemQueue after the function has been executed
 func (q *ItemQueue) secure(function func()) {
 	// Lock the queue then unlock once function closes
 	q.mutex.Lock()
@@ -40,9 +40,10 @@ func (q *ItemQueue) secure(function func()) {
 	function()
 }
 
-// q.RemoveAtIndex(index integer) -> *Item
-// The RemoveAtIndex() function is used to remove an item at the provided index of the ItemQueue
-// The function will then return the removed item if the user requires it's use
+// The RemoveAtIndex() function is used to remove an
+// item at the provided index of the ItemQueue
+//
+// Returns the removed item
 func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 	var item Item
 	q.secure(func() {
@@ -52,10 +53,8 @@ func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 	return &item
 }
 
-// q.Contains(Item) -> None
-// The Contains() function will scheck whether the provided ItemQueue contains
-//
-//	the given Item (_item)
+// The Contains() function will check whether
+// the provided ItemQueue contains the given item
 func (q *ItemQueue) Contains(item Item) bool {
 	// Mutex Locking/Unlocking
 	q.mutex.RLock()
@@ -72,8 +71,7 @@ func (q *ItemQueue) Contains(item Item) bool {
 
 // q.Remove(Item) -> None
 // The Remove() function will secure the ItemQueue before iterating
-//
-//	through said ItemQueue and remove the given Item (_item)
+// over the queue items, removing the given Item (_item)
 func (q *ItemQueue) Remove(item Item) {
 	q.secure(func() {
 		for i := 0; i < len(q.items); i++ {
@@ -85,20 +83,17 @@ func (q *ItemQueue) Remove(item Item) {
 	})
 }
 
-// q.Put(Item) -> None
-// The Put() function is used to add a new item to the provided ItemQueue
+// The Put() function is used to add a new
+// item to the provided ItemQueue
 func (q *ItemQueue) Put(i Item) {
 	q.secure(func() {
 		q.items = append(q.items, i)
 	})
 }
 
-// q.Get() -> Item
-// The Get() function will append the first item of the ItemQueue to the back of the slice
-//
-//	then remove it from the front
-//
-// The function returns the first item of the ItemQueue
+// The Get() function will append the first
+// item of the ItemQueue to the front of the
+// slice then remove it from the back
 func (q *ItemQueue) Get() *Item {
 	var item Item
 	q.secure(func() {
@@ -109,10 +104,8 @@ func (q *ItemQueue) Get() *Item {
 	return &item
 }
 
-// q.Grab() -> Item
-// The Grab() function will return the first item of the ItemQueue then
-//
-//	remove it from said ItemQueue
+// The Grab() function will return the first item of the
+// queue items slikce then remove it from said slice
 func (q *ItemQueue) Grab() *Item {
 	var item Item
 	q.secure(func() {
@@ -122,19 +115,17 @@ func (q *ItemQueue) Grab() *Item {
 	return &item
 }
 
-// q.Clear() -> None
-// The Clear() function will secure the queue then remove all of its items
+// The Clear() function will secure the
+// queue then remove all of its items
 func (q *ItemQueue) Clear() {
 	q.secure(func() {
 		q.items = []Item{}
 	})
 }
 
-// q.Show() -> []Item
 // The Show() function will return the ItemQueue's items
 func (q *ItemQueue) Show() []Item {
-
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
@@ -144,11 +135,10 @@ func (q *ItemQueue) Show() []Item {
 	return func(items []Item) []Item { return items }(q.items)
 }
 
-// q.GetAtIndex(index integer) -> Item
-// The GetAtIndex() function is used to return an item at the provided index of the ItemQueue
+// The GetAtIndex() function is used to return an item
+// at the provided index of the ItemQueue
 func (q *ItemQueue) GetAtIndex(i int) Item {
-
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
@@ -158,11 +148,11 @@ func (q *ItemQueue) GetAtIndex(i int) Item {
 	return func(i Item) Item { return i }(q.items[i])
 }
 
-// q.IsEmpty() -> bool
-// The IsEmpty() function will return whether the provided ItemQueue contains any Items
+// The IsEmpty() function will return whether the
+// provided ItemQueue contains any Items
 func (q *ItemQueue) IsEmpty() bool {
 
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
@@ -170,11 +160,10 @@ func (q *ItemQueue) IsEmpty() bool {
 	return len(q.items) == 0
 }
 
-// q.IsNotEmpty() -> bool
-// The IsNotEmpty() function will return whether the provided ItemQueue contains any Items
+// The IsNotEmpty() function will return whether
+// the provided ItemQueue contains any Items
 func (q *ItemQueue) IsNotEmpty() bool {
-
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
@@ -182,11 +171,10 @@ func (q *ItemQueue) IsNotEmpty() bool {
 	return len(q.items) > 0
 }
 
-// q.Size() -> int
-// The Size() function will return the length of the ItemQueue slice
+// The Size() function will return the
+// length of the ItemQueue slice
 func (q *ItemQueue) Size() int {
-
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
