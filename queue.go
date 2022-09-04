@@ -57,8 +57,7 @@ func (q *ItemQueue) RemoveAtIndex(i int) *Item {
 //
 //	the given Item (_item)
 func (q *ItemQueue) Contains(item Item) bool {
-
-	// Lock Reading
+	// Mutex Locking/Unlocking
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
@@ -140,7 +139,9 @@ func (q *ItemQueue) Show() []Item {
 	defer q.mutex.RUnlock()
 
 	// Return the queue items
-	return q.items
+	// Create a copy of the q items slice
+	// to accompany for safety
+	return func(items []Item) []Item { return items }(q.items)
 }
 
 // q.GetAtIndex(index integer) -> Item
@@ -152,7 +153,9 @@ func (q *ItemQueue) GetAtIndex(i int) Item {
 	defer q.mutex.RUnlock()
 
 	// Return the item at the specific index
-	return q.items[i]
+	// Create a copy of the item index
+	// to accompany for safety
+	return func(i Item) Item { return i }(q.items[i])
 }
 
 // q.IsEmpty() -> bool
