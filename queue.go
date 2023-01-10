@@ -28,28 +28,18 @@ func Create() *ItemQueue {
 	return &ItemQueue{mutex: &sync.RWMutex{}, items: []Item{}}
 }
 
-// The Secure() function is used to lock the ItemQueue
-// before executing the provided function then unlock the
-// ItemQueue after the function has been executed
-func (q *ItemQueue) secure(function func()) {
-	// Lock the queue then unlock once function closes
-	q.mutex.Lock()
-	defer q.mutex.Unlock()
-
-	// Run the provided function
-	function()
-}
-
 // The RemoveAtIndex() function is used to remove an
 // item at the provided index of the ItemQueue
 //
 // Returns the removed item
 func (q *ItemQueue) RemoveAtIndex(i int) *Item {
-	var item Item
-	q.secure(func() {
-		item = q.items[i]
-		q.items = append(q.items[:i], q.items[i+1:]...)
-	})
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Remove the item at the specific index
+	var item Item = q.items[i]
+	q.items = append(q.items[:i], q.items[i+1:]...)
 	return &item
 }
 
@@ -73,54 +63,72 @@ func (q *ItemQueue) Contains(item Item) bool {
 // The Remove() function will secure the ItemQueue before iterating
 // over the queue items, removing the given Item (_item)
 func (q *ItemQueue) Remove(item Item) {
-	q.secure(func() {
-		for i := 0; i < len(q.items); i++ {
-			if q.items[i] == item {
-				q.items = append(q.items[:i], q.items[i+1:]...)
-				return
-			}
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Iterate over the queue items
+	for i := 0; i < len(q.items); i++ {
+		if q.items[i] == item {
+			q.items = append(q.items[:i], q.items[i+1:]...)
+			return
 		}
-	})
+	}
 }
 
 // The Put() function is used to add a new
 // item to the provided ItemQueue
 func (q *ItemQueue) Put(i Item) {
-	q.secure(func() {
-		q.items = append(q.items, i)
-	})
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Append the item to the queue
+	q.items = append(q.items, i)
 }
 
 // The Get() function will append the first
 // item of the ItemQueue to the front of the
 // slice then remove it from the back
 func (q *ItemQueue) Get() *Item {
-	var item Item
-	q.secure(func() {
-		item = q.items[0]
-		q.items = append(q.items, q.items[0])
-		q.items = q.items[1:]
-	})
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Get the first item of the queue and move
+	// it to the front
+	var item Item = q.items[0]
+	q.items = append(q.items, q.items[0])
+	q.items = q.items[1:]
+
+	// Return the item
 	return &item
 }
 
 // The Grab() function will return the first item of the
 // queue items slikce then remove it from said slice
 func (q *ItemQueue) Grab() *Item {
-	var item Item
-	q.secure(func() {
-		item = q.items[0]
-		q.items = q.items[1:]
-	})
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Get the first item of the queue
+	var item Item = q.items[0]
+	q.items = q.items[1:]
+
+	// Return the item
 	return &item
 }
 
 // The Clear() function will secure the
 // queue then remove all of its items
 func (q *ItemQueue) Clear() {
-	q.secure(func() {
-		q.items = []Item{}
-	})
+	// Mutex Locking/Unlocking
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Remove all items from the queue
+	q.items = []Item{}
 }
 
 // The Show() function will return the ItemQueue's items
