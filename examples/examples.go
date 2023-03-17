@@ -21,7 +21,7 @@ func RemoveItems() {
 
 	// Remove at index
 	removedItem := queue.RemoveAtIndex(0)
-	println(*removedItem)
+	println(removedItem)
 
 	// Search and remove
 	queue.Remove("Item")
@@ -33,7 +33,7 @@ func GetItems() {
 
 	// Get the item from the queue (doesn't remove it from the queue)
 	item := queue.Get()
-	println(*item)
+	println(item)
 
 	// Grab the item from the queue (removes it from the queue)
 	_item := queue.Grab()

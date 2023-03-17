@@ -30,32 +30,28 @@ type ItemQueue[T any] struct {
 // Create() -> *ItemQueue
 // The Create() function will return an empty ItemQueue
 func Create[T any]() *ItemQueue[T] {
-	return &ItemQueue[T]{items: []T{}}
-}
-
-// q.Secure(func()) -> None
-// The Secure() function is used to lock the ItemQueue before executing the provided function
-//
-//	then unlock the ItemQueue after the function has been executed
-func (q *ItemQueue[T]) secure(function func()) {
-	// Lock the queue then unlock once function closes
-	q.mutex.Lock()
-	defer q.mutex.Unlock()
-
-	// Run the provided function
-	function()
+	return &ItemQueue[T]{
+		mutex: &sync.RWMutex{},
+		items: []T{},
+	}
 }
 
 // q.Index(index integer) -> *Item
 // The RemoveAtIndex() function is used to remove an item at the provided index of the ItemQueue
 // The function will then return the removed item if the user requires it's use
-func (q *ItemQueue[T]) RemoveAtIndex(i int) *T {
-	var item T
-	q.secure(func() {
-		item = q.items[i]
-		q.items = append(q.items[:i], q.items[i+1:]...)
-	})
-	return &item
+func (q *ItemQueue[T]) RemoveAtIndex(i int) T {
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Create a copy of the item
+	var copy T = q.items[i]
+
+	// Remove the item at the index
+	q.items = append(q.items[:i], q.items[i+1:]...)
+
+	// Returen the copy of the item
+	return copy
 }
 
 // q.Contains(Item) -> None
@@ -63,7 +59,6 @@ func (q *ItemQueue[T]) RemoveAtIndex(i int) *T {
 //
 //	the given Item (_item)
 func (q *ItemQueue[T]) Contains(item any) bool {
-
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
@@ -82,22 +77,28 @@ func (q *ItemQueue[T]) Contains(item any) bool {
 //
 //	through said ItemQueue and remove the given Item (_item)
 func (q *ItemQueue[T]) Remove(item any) {
-	q.secure(func() {
-		for i := 0; i < len(q.items); i++ {
-			if any(q.items[i]) == item {
-				q.items = append(q.items[:i], q.items[i+1:]...)
-				return
-			}
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Iterate ove the queue items
+	for i := 0; i < len(q.items); i++ {
+		if any(q.items[i]) == item {
+			q.items = append(q.items[:i], q.items[i+1:]...)
+			return
 		}
-	})
+	}
 }
 
 // q.Put(Item) -> None
 // The Put() function is used to add a new item to the provided ItemQueue
 func (q *ItemQueue[T]) Put(i T) {
-	q.secure(func() {
-		q.items = append(q.items, i)
-	})
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Append the new item to the item queue
+	q.items = append(q.items, i)
 }
 
 // q.Get() -> Item
@@ -106,65 +107,83 @@ func (q *ItemQueue[T]) Put(i T) {
 //	then remove it from the front
 //
 // The function returns the first item of the ItemQueue
-func (q *ItemQueue[T]) Get() *T {
-	var item T
-	q.secure(func() {
-		item = q.items[0]
-		q.items = append(q.items, q.items[0])
-		q.items = q.items[1:]
-	})
-	return &item
+func (q *ItemQueue[T]) Get() T {
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Create a copy of the item
+	var copy T = q.items[0]
+
+	// Move the item at the front to the back
+	q.items = append(q.items, q.items[0])
+	q.items = q.items[1:]
+
+	// Return the copy
+	return copy
 }
 
 // q.Grab() -> Item
 // The Grab() function will return the first item of the ItemQueue then
 //
 //	remove it from said ItemQueue
-func (q *ItemQueue[T]) Grab() *T {
-	var item T
-	q.secure(func() {
-		item = q.items[0]
-		q.items = q.items[1:]
-	})
-	return &item
+func (q *ItemQueue[T]) Grab() T {
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Create a copy of the item
+	var copy T = q.items[0]
+
+	// Remove it from the queue
+	q.items = q.items[1:]
+
+	// Return the copy
+	return copy
 }
 
 // q.Clear() -> None
 // The Clear() function will secure the queue then remove all of its items
 func (q *ItemQueue[T]) Clear() {
-	q.secure(func() {
-		q.items = []T{}
-	})
+	// Lock the queue then unlock once function closes
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	// Set the queue items to empty
+	q.items = []T{}
 }
 
 // q.Show() -> *[]Item
 // The Show() function will return the ItemQueue's items
 func (q *ItemQueue[T]) Show() []T {
-
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// Return the queue items
-	return q.items
+	// Create a copy of the items
+	var copy []T = q.items
+
+	// Return the copy
+	return copy
 }
 
 // q.GetAtIndex(index integer) -> *Item
 // The GetAtIndex() function is used to return an item at the provided index of the ItemQueue
 func (q *ItemQueue[T]) GetAtIndex(i int) T {
-
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// Return the item at the specific index
-	return q.items[i]
+	// Create a copy of the item at the index
+	var copy T = q.items[i]
+
+	// Return the copy
+	return copy
 }
 
 // q.IsEmpty() -> bool
 // The IsEmpty() function will return whether the provided ItemQueue contains any Items
 func (q *ItemQueue[T]) IsEmpty() bool {
-
 	// Lock Reading
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()

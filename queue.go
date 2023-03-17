@@ -25,22 +25,29 @@ type ItemQueue struct {
 // The Create() function is used to create
 // a new, empty ItemQueue
 func Create() *ItemQueue {
-	return &ItemQueue{mutex: &sync.RWMutex{}, items: []Item{}}
+	return &ItemQueue{
+		mutex: &sync.RWMutex{},
+		items: []Item{},
+	}
 }
 
 // The RemoveAtIndex() function is used to remove an
 // item at the provided index of the ItemQueue
 //
 // Returns the removed item
-func (q *ItemQueue) RemoveAtIndex(i int) *Item {
+func (q *ItemQueue) RemoveAtIndex(i int) Item {
 	// Mutex Locking/Unlocking
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
+	// Create a copy of the item
+	var copy Item = q.items[i]
+
 	// Remove the item at the specific index
-	var item Item = q.items[i]
 	q.items = append(q.items[:i], q.items[i+1:]...)
-	return &item
+
+	// Return the copied item
+	return copy
 }
 
 // The Contains() function will check whether
@@ -78,46 +85,49 @@ func (q *ItemQueue) Remove(item Item) {
 
 // The Put() function is used to add a new
 // item to the provided ItemQueue
-func (q *ItemQueue) Put(i Item) {
+func (q *ItemQueue) Put(item Item) {
 	// Mutex Locking/Unlocking
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
 	// Append the item to the queue
-	q.items = append(q.items, i)
+	q.items = append(q.items, item)
 }
 
 // The Get() function will append the first
 // item of the ItemQueue to the front of the
 // slice then remove it from the back
-func (q *ItemQueue) Get() *Item {
+func (q *ItemQueue) Get() Item {
 	// Mutex Locking/Unlocking
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
-	// Get the first item of the queue and move
-	// it to the front
-	var item Item = q.items[0]
+	// Create a copy of the first item of the queue
+	var copy Item = q.items[0]
+
+	// Move the first item of the queue to the front
 	q.items = append(q.items, q.items[0])
 	q.items = q.items[1:]
 
 	// Return the item
-	return &item
+	return copy
 }
 
 // The Grab() function will return the first item of the
 // queue items slikce then remove it from said slice
-func (q *ItemQueue) Grab() *Item {
+func (q *ItemQueue) Grab() Item {
 	// Mutex Locking/Unlocking
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
 	// Get the first item of the queue
 	var item Item = q.items[0]
+
+	// And remove it
 	q.items = q.items[1:]
 
 	// Return the item
-	return &item
+	return item
 }
 
 // The Clear() function will secure the
@@ -137,10 +147,11 @@ func (q *ItemQueue) Show() []Item {
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// Return the queue items
-	// Create a copy of the q items slice
-	// to accompany for safety
-	return func(items []Item) []Item { return items }(q.items)
+	// Create a copy of the queue items
+	var copy []Item = q.items
+
+	// Return the copy
+	return copy
 }
 
 // The GetAtIndex() function is used to return an item
@@ -150,10 +161,11 @@ func (q *ItemQueue) GetAtIndex(i int) Item {
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// Return the item at the specific index
-	// Create a copy of the item index
-	// to accompany for safety
-	return func(i Item) Item { return i }(q.items[i])
+	// Create a copy of the item at the index
+	var copy Item = q.items[i]
+
+	// Return the copy
+	return copy
 }
 
 // The IsEmpty() function will return whether the
